@@ -1,11 +1,6 @@
 import {inspect} from 'node:util';
 import test from 'ava';
-import {
-	activeWindow,
-	activeWindowSync,
-	openWindows,
-	openWindowsSync,
-} from './index.js';
+import activeWindow from './index.js';
 
 function asserter(t, result) {
 	t.log(inspect(result));
@@ -16,7 +11,7 @@ function asserter(t, result) {
 	t.is(typeof result.owner.name, 'string');
 }
 
-function asserterOpenWindows(t, result) {
+function asserterGetOpenWindows(t, result) {
 	t.log(inspect(result));
 	t.is(typeof result, 'object');
 	t.is(typeof result.length, 'number');
@@ -27,14 +22,14 @@ test('activeWindow', async t => {
 	asserter(t, await activeWindow());
 });
 
-test('activeWindowSync', t => {
-	asserter(t, activeWindowSync());
+test('activeWindow.sync', t => {
+	asserter(t, activeWindow.sync());
 });
 
-test('openWindows', async t => {
-	asserterOpenWindows(t, await openWindows());
+test('activeWindow.getOpenWindows', async t => {
+	asserterGetOpenWindows(t, await activeWindow.getOpenWindows());
 });
 
-test('openWindowsSync', t => {
-	asserterOpenWindows(t, openWindowsSync());
+test('activeWindow.getOpenWindowsSync', t => {
+	asserterGetOpenWindows(t, activeWindow.getOpenWindowsSync());
 });

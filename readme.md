@@ -1,43 +1,43 @@
-# get-windows
+# active-win
 
-> Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) and open windows (title, id, bounds, owner, URL, etc)
+Get metadata about the [active window](https://en.wikipedia.org/wiki/Active_window) (title, id, bounds, owner, URL, etc)
 
 Works on macOS 10.14+, Linux ([note](#linux-support)), and Windows 7+.
 
 ## Install
 
 ```sh
-npm install get-windows
+npm install active-win
 ```
-
-**[This is an ESM package which requires you to use ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)**
 
 ## Usage
 
 ```js
-import {activeWindow} from 'get-windows';
+const activeWindow = require('active-win');
 
-console.log(await activeWindow(options));
-/*
-{
-	title: 'Unicorns - Google Search',
-	id: 5762,
-	bounds: {
-		x: 0,
-		y: 0,
-		height: 900,
-		width: 1440
-	},
-	owner: {
-		name: 'Google Chrome',
-		processId: 310,
-		bundleId: 'com.google.Chrome',
-		path: '/Applications/Google Chrome.app'
-	},
-	url: 'https://sindresorhus.com/unicorn',
-	memoryUsage: 11015432
-}
-*/
+(async () => {
+	console.log(await activeWindow(options));
+	/*
+	{
+		title: 'Unicorns - Google Search',
+		id: 5762,
+		bounds: {
+			x: 0,
+			y: 0,
+			height: 900,
+			width: 1440
+		},
+		owner: {
+			name: 'Google Chrome',
+			processId: 310,
+			bundleId: 'com.google.Chrome',
+			path: '/Applications/Google Chrome.app'
+		},
+		url: 'https://sindresorhus.com/unicorn',
+		memoryUsage: 11015432
+	}
+	*/
+})();
 ```
 
 ## API
@@ -50,13 +50,6 @@ Get metadata about the active window.
 
 Type: `object`
 
-##### accessibilityPermission **(macOS only)**
-
-Type: `boolean`\
-Default: `true`
-
-Enable the accessibility permission check. Setting this to `false` will prevent the accessibility permission prompt on macOS versions 10.15 and newer. The `url` property won't be retrieved.
-
 ##### screenRecordingPermission **(macOS only)**
 
 Type: `boolean`\
@@ -64,7 +57,7 @@ Default: `true`
 
 Enable the screen recording permission check. Setting this to `false` will prevent the screen recording permission prompt on macOS versions 10.15 and newer. The `title` property in the result will always be set to an empty string.
 
-### activeWindowSync(options?)
+### activeWindow.sync(options?)
 
 Get metadata about the active window synchronously.
 
@@ -80,11 +73,6 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 	- `y` *(number)*
 	- `width` *(number)*
 	- `height` *(number)*
-- `contentBounds` *(Object)* - Window content position and size, which excludes the title bar, menu bar, and frame *(Windows only)*
-	- `x` *(number)*
-	- `y` *(number)*
-	- `width` *(number)*
-	- `height` *(number)*
 - `owner` *(Object)* - App that owns the window
 	- `name` *(string)* - Name of the app
 	- `processId` *(number)* - Process identifier
@@ -94,21 +82,21 @@ Returns a `Promise<object>` with the result, or `Promise<undefined>` if there is
 	- Supported browsers: Safari (includes Technology Preview), Chrome (includes Beta, Dev, and Canary), Edge (includes Beta, Dev, and Canary), Brave (includes Beta and Nightly), Mighty, Ghost Browser, Wavebox, Sidekick, Opera (includes Beta and Developer), or Vivaldi
 - `memoryUsage` *(number)* - Memory usage by the window owner process
 
-### openWindows()
+### activeWindow.getOpenWindows()
 
 Get metadata about all open windows.
 
 Windows are returned in order from front to back.
 
-Returns `Promise<Result[]>`.
+Returns `Promise<activeWindow.Result[]>`.
 
-### openWindowsSync()
+### activeWindow.getOpenWindowsSync()
 
 Get metadata about all open windows synchronously.
 
 Windows are returned in order from front to back.
 
-Returns `Result[]`.
+Returns `activeWindow.Result[]`.
 
 ## OS support
 
@@ -122,7 +110,7 @@ Wayland is not supported. For security reasons, Wayland does not provide a way t
 
 ## Electron usage
 
-If you use this package in an Electron app that is sandboxed and you want to get the `.url` property, you need to add the [proper entitlements and usage description](https://github.com/sindresorhus/get-windows/issues/99#issuecomment-870874546).
+If you use this package in an Electron app that is sandboxed and you want to get the `.url` property, you need to add the [proper entitlements and usage description](https://github.com/sindresorhus/active-win/issues/99#issuecomment-870874546).
 
 ## Users
 
@@ -131,7 +119,12 @@ If you use this package in an Electron app that is sandboxed and you want to get
 
 ## Related
 
-- [windows-cli](https://github.com/sindresorhus/windows-cli) - CLI for this package
+- [active-win-cli](https://github.com/sindresorhus/active-win-cli) - CLI for this module
+
+## Maintainers
+
+- [Sindre Sorhus](https://github.com/sindresorhus)
+- [Sebastián Ramírez](https://github.com/tiangolo)
 
 ## Development
 

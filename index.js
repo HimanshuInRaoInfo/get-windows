@@ -1,85 +1,65 @@
-import process from 'node:process';
-import {
-	activeWindowSync as activeWindowSyncMacOS,
-	openWindowsSync as openWindowsSyncMacOS,
-} from './lib/macos.js';
-import {
-	activeWindowSync as activeWindowSyncLinux,
-	openWindowsSync as openWindowsSyncLinux,
-} from './lib/linux.js';
-import {
-	activeWindowSync as activeWindowSyncWindows,
-	openWindowsSync as openWindowsSyncWindows,
-} from './lib/windows.js';
+'use strict';
 
-export async function activeWindow(options) {
+module.exports = options => {
 	if (process.platform === 'darwin') {
-		const {activeWindow} = await import('./lib/macos.js');
-		return activeWindow(options);
+		return require('./lib/macos.js')(options);
 	}
 
 	if (process.platform === 'linux') {
-		const {activeWindow} = await import('./lib/linux.js');
-		return activeWindow(options);
+		return require('./lib/linux.js')(options);
 	}
 
 	if (process.platform === 'win32') {
-		const {activeWindow} = await import('./lib/windows.js');
-		return activeWindow(options);
+		return require('./lib/windows.js')(options);
 	}
 
-	throw new Error('macOS, Linux, and Windows only');
-}
+	return Promise.reject(new Error('macOS, Linux, and Windows only'));
+};
 
-export function activeWindowSync(options) {
+module.exports.sync = options => {
 	if (process.platform === 'darwin') {
-		return activeWindowSyncMacOS(options);
+		return require('./lib/macos.js').sync(options);
 	}
 
 	if (process.platform === 'linux') {
-		return activeWindowSyncLinux(options);
+		return require('./lib/linux.js').sync(options);
 	}
 
 	if (process.platform === 'win32') {
-		return activeWindowSyncWindows(options);
+		return require('./lib/windows.js').sync(options);
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
-}
+};
 
-export async function openWindows(options) {
+module.exports.getOpenWindows = options => {
 	if (process.platform === 'darwin') {
-		const {openWindows} = await import('./lib/macos.js');
-		return openWindows(options);
+		return require('./lib/macos.js').getOpenWindows(options);
 	}
 
 	if (process.platform === 'linux') {
-		const {openWindows} = await import('./lib/linux.js');
-		return openWindows(options);
+		return require('./lib/linux.js').getOpenWindows(options);
 	}
 
 	if (process.platform === 'win32') {
-		const {openWindows} = await import('./lib/windows.js');
-		return openWindows(options);
+		return require('./lib/windows.js').getOpenWindows(options);
 	}
 
-	throw new Error('macOS, Linux, and Windows only');
-}
+	return Promise.reject(new Error('macOS, Linux, and Windows only'));
+};
 
-export function openWindowsSync(options) {
+module.exports.getOpenWindowsSync = options => {
 	if (process.platform === 'darwin') {
-		return openWindowsSyncMacOS(options);
+		return require('./lib/macos.js').getOpenWindowsSync(options);
 	}
 
 	if (process.platform === 'linux') {
-		return openWindowsSyncLinux(options);
+		return require('./lib/linux.js').getOpenWindowsSync(options);
 	}
 
 	if (process.platform === 'win32') {
-		return openWindowsSyncWindows(options);
+		return require('./lib/windows.js').getOpenWindowsSync(options);
 	}
 
 	throw new Error('macOS, Linux, and Windows only');
-}
-
-// Note to self: The `main` field in package.json is requried for pre-gyp.
+};
